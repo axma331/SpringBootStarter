@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 import t1.ismailov.springbootstarter.entity.HttpLogEntity;
 
@@ -16,12 +15,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @RequiredArgsConstructor
 public class HttpLoggingInterceptor implements HandlerInterceptor {
 
-    private static final Logger log = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final HttpLoggingProperties loggingProperties;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -54,7 +54,7 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
                         response.getHeaderNames().stream(), response::getHeader
                 ));
 
-        log.info("Request processed: method={}, URI={}, status={}, executionTime={} ms",
+        log.debug("Request processed: method={}, URI={}, status={}, executionTime={} ms",
                 logData.getMethod(), logData.getUri(), logData.getStatusCode(), logData.getExecutionTime());
 
         if (ex != null) {
@@ -68,10 +68,7 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
     private static long getExecutionTime(HttpServletRequest request) {
         Object startTimeAttr = request.getAttribute("startTime");
         if (startTimeAttr instanceof Long) {
-            long executionTime = System.currentTimeMillis() - (long) startTimeAttr;
-
-            log.debug("Execution time calculated: {} ms", executionTime);
-            return executionTime;
+            return System.currentTimeMillis() - (long) startTimeAttr;
         }
         log.warn("Start time attribute is missing or incorrect, unable to calculate execution time.");
         return -1;
@@ -87,11 +84,11 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
 
     private void logging(HttpLogEntity logData) {
         try {
-            String message = "JSON".equalsIgnoreCase(loggingProperties.getFormat())
+            String data = "JSON".equalsIgnoreCase(loggingProperties.getFormat())
                     ? objectMapper.writeValueAsString(logData)
                     : logData.toString();
 
-            log.info("Logging data: {}", message);
+            log.info("Logging data: {}", data);
         } catch (JsonProcessingException ex) {
             log.error("Error occurred during logging: {}", ex.getMessage(), ex);
         }

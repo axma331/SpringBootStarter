@@ -14,25 +14,35 @@ public class HttpLoggingEnvironmentPostProcessor implements EnvironmentPostProce
     private static final String PROPERTY_HTTP_LOGGING_LEVEL =
             "logging.level.t1.ismailov.springbootstarter.config.HttpLoggingInterceptor";
 
-
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        log.info("LoggingEnvironmentPostProcessor");
+        log.info("Running HttpLoggingEnvironmentPostProcessor");
 
-        if (!isBoolValue(environment.getProperty(PROPERTY_HTTP_LOGGING_ENABLED))) {
+        String enabled = environment.getProperty(PROPERTY_HTTP_LOGGING_ENABLED);
+        String format = environment.getProperty(PROPERTY_HTTP_LOGGING_FORMAT);
+        String level = environment.getProperty(PROPERTY_HTTP_LOGGING_LEVEL);
+
+        log.debug("HttpLogging configuration - enabled: {}, format: {}, level: {}", enabled, format, level);
+
+        if (!isBoolValue(enabled)) {
+            log.error("Invalid value for '{}': {}", PROPERTY_HTTP_LOGGING_ENABLED, enabled);
             throw new HttpLoggingStartupException("Error checking property '" + PROPERTY_HTTP_LOGGING_ENABLED + "' " +
                     "in configuration file. Valid values: true or false!{}");
         }
 
-        if (!validFormat(environment.getProperty(PROPERTY_HTTP_LOGGING_FORMAT))) {
+        if (!validFormat(format)) {
+            log.error("Invalid value for '{}': {}", PROPERTY_HTTP_LOGGING_FORMAT, format);
             throw new HttpLoggingStartupException("Error checking property '" + PROPERTY_HTTP_LOGGING_FORMAT + "' " +
                     "in configuration file. Valid values: json or text!");
         }
 
-        if (!shouldLogging(environment.getProperty(PROPERTY_HTTP_LOGGING_LEVEL))) {
+        if (!shouldLogging(level)) {
+            log.error("Invalid value for '{}': {}", PROPERTY_HTTP_LOGGING_LEVEL, level);
             throw new HttpLoggingStartupException("Error checking property '" + PROPERTY_HTTP_LOGGING_LEVEL + "' " +
                     "in configuration file. Valid values: debug, info, error, warning!");
         }
+
+        log.debug("HttpLoggingEnvironmentPostProcessor completed successfully");
     }
 
 
