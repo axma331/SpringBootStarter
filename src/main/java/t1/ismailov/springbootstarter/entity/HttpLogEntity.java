@@ -20,6 +20,16 @@ public class HttpLogEntity {
     private Map<String, String> responseHeaders;
     private int statusCode;
 
-    //todo toString();
+    @Override
+    public String toString() {
+        return "HttpLogEntity{" +
+                "executionTime=" + executionTime +
+                ", method='" + method + '\'' +
+                ", uri='" + uri + '\'' +
+                ", requestHeaders=" + requestHeaders +
+                ", responseHeaders=" + responseHeaders +
+                ", statusCode=" + statusCode +
+                '}';
+    }
 
 }
