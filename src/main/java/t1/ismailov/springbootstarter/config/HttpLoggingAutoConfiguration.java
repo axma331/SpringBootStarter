@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,20 +12,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Slf4j
 @AutoConfiguration
-@ConditionalOnWebApplication
 @EnableConfigurationProperties(HttpLoggingProperties.class)
 @ConditionalOnProperty(prefix = "http.logging", value = "enabled", havingValue = "true")
 public class HttpLoggingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public HttpLoggingInterceptor interceptor(HttpLoggingProperties loggingProperties) {
+    public HttpLoggingInterceptor loggingInterceptor(HttpLoggingProperties loggingProperties) {
         log.info("Creating HttpLoggingInterceptor bean");
         return new HttpLoggingInterceptor(loggingProperties);
     }
 
     @Bean
-    @ConditionalOnBean(name = "interceptor")
+    @ConditionalOnBean(name = "loggingInterceptor")
     public WebMvcConfigurer webMvcConfigurer(HttpLoggingInterceptor interceptor) {
         log.info("Configuring WebMvcConfigurer to add HttpLoggingInterceptor");
         return new WebMvcConfigurer() {

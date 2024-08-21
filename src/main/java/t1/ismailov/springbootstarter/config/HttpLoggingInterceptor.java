@@ -21,13 +21,12 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
 
     private final HttpLoggingProperties loggingProperties;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    public static ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) {
-
         long startTime = System.currentTimeMillis();
         request.setAttribute("startTime", startTime);
 
@@ -47,7 +46,10 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
                 .setMethod(request.getMethod())
                 .setUri(request.getRequestURI())
                 .setRequestHeaders(getHeaders(
-                        Collections.list(request.getHeaderNames()).stream(), request::getHeader
+                        request.getHeaderNames() != null
+                                ? Collections.list(request.getHeaderNames()).stream()
+                                : Stream.empty(),
+                        request::getHeader
                 ))
                 .setStatusCode(response.getStatus())
                 .setResponseHeaders(getHeaders(
@@ -59,13 +61,13 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
 
         if (ex != null) {
             log.error("Exception occurred during request processing: {}", ex.getMessage(), ex);
+            return;
         } else {
             logging(logData);
         }
     }
 
-
-    private static long getExecutionTime(HttpServletRequest request) {
+    protected static long getExecutionTime(HttpServletRequest request) {
         Object startTimeAttr = request.getAttribute("startTime");
         if (startTimeAttr instanceof Long) {
             return System.currentTimeMillis() - (long) startTimeAttr;
@@ -74,7 +76,7 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
         return -1;
     }
 
-    private static Map<String, String> getHeaders(Stream<String> headerNames,
+    protected static Map<String, String> getHeaders(Stream<String> headerNames,
                                                   Function<String, String> headerValueFunction) {
         Map<String, String> headers = headerNames.collect(Collectors.toMap(Function.identity(), headerValueFunction));
 
@@ -82,7 +84,7 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
         return headers;
     }
 
-    private void logging(HttpLogEntity logData) {
+    protected void logging(HttpLogEntity logData) {
         try {
             String data = "JSON".equalsIgnoreCase(loggingProperties.getFormat())
                     ? objectMapper.writeValueAsString(logData)
