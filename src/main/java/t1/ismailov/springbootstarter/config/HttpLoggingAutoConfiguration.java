@@ -1,5 +1,6 @@
 package t1.ismailov.springbootstarter.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@Slf4j
 @AutoConfiguration
 @ConditionalOnWebApplication
 @EnableConfigurationProperties(HttpLoggingProperties.class)
@@ -19,15 +21,18 @@ public class HttpLoggingAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public HttpLoggingInterceptor interceptor(HttpLoggingProperties loggingProperties) {
+        log.info("Creating HttpLoggingInterceptor bean");
         return new HttpLoggingInterceptor(loggingProperties);
     }
 
     @Bean
     @ConditionalOnBean(name = "interceptor")
     public WebMvcConfigurer webMvcConfigurer(HttpLoggingInterceptor interceptor) {
+        log.info("Configuring WebMvcConfigurer to add HttpLoggingInterceptor");
         return new WebMvcConfigurer() {
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
+                log.debug("Adding HttpLoggingInterceptor to InterceptorRegistry");
                 registry.addInterceptor(interceptor);
             }
         };
