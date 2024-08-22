@@ -2,21 +2,6 @@
 
 Данное приложение предоставляет стартер для автоматической настройки логирования HTTP-запросов и ответов в приложениях на базе Spring Boot. Стартер конфигурирует интерцептор, который записывает важные детали каждого HTTP-запроса и ответа, такие как метод, URL, заголовки, статус ответа, время выполнения и многое другое.
 
-## Технологии
-
-Проект использует следующие технологии и инструменты:
-
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white "Java")
-![Maven](https://img.shields.io/badge/Maven-green.svg?style=for-the-badge&logo=mockito&logoColor=white "Maven")
-![Spring](https://img.shields.io/badge/Spring-blueviolet.svg?style=for-the-badge&logo=spring&logoColor=white "Spring")
-![GitHub](https://img.shields.io/badge/git-%23121011.svg?style=for-the-badge&logo=github&logoColor=white "Git")
-+ Язык программирования: *Java 17*
-+ Автоматизация сборки: *Maven*
-+ Фреймворк: *Spring*
-+ Контроль версий: *Git*
-
-## HTTP Logging Spring Boot Starter
-
 <details>
 <summary>Полный текст задания</summary>
 Задание: Создание Spring Boot Starter для логирования HTTP запросов
@@ -45,6 +30,19 @@
 - Покройте тестами основные сценарии использования и краевые случаи.
 
 </details>
+
+## Технологии
+
+Проект использует следующие технологии и инструменты:
+
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white "Java")
+![Maven](https://img.shields.io/badge/Maven-green.svg?style=for-the-badge&logo=mockito&logoColor=white "Maven")
+![Spring](https://img.shields.io/badge/Spring-blueviolet.svg?style=for-the-badge&logo=spring&logoColor=white "Spring")
+![GitHub](https://img.shields.io/badge/git-%23121011.svg?style=for-the-badge&logo=github&logoColor=white "Git")
++ Язык программирования: *Java 17*
++ Автоматизация сборки: *Maven*
++ Фреймворк: *Spring*
++ Контроль версий: *Git*
 
 ## Установка и настройка
 
@@ -82,7 +80,7 @@
   ```properties
   logging.level.t1.ismailov.springbootstarter.config.HttpLoggingInterceptor=INFO
   ```
-- Настройка уровня логирования для всего пакета:
+- Настройка уровня логирования для всего пакета стартера:
   ```properties
   logging.level.t1.ismailov.springbootstarter=DEBUG
   ```
