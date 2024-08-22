@@ -15,6 +15,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * {@code HttpLoggingInterceptor} is a Spring MVC interceptor that logs HTTP requests and responses.
+ * It captures details such as the request method, URI, headers, status code, and execution time.
+ * This information can be logged in different formats (e.g., JSON) based on the configuration.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class HttpLoggingInterceptor implements HandlerInterceptor {
@@ -23,6 +28,10 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
 
     public static ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * This method that logs the start time of the request processing and attaches it
+     * to the request as an attribute.
+     */
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
@@ -35,6 +44,12 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
         return true;
     }
 
+    /**
+     * Logs the HTTP request and response details after the request has been processed.
+     * If an exception occurred during processing, it logs the error.
+     * This method captures the method, URI, headers, status code, and execution time
+     * of the request and response.
+     */
     @Override
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response,
@@ -67,6 +82,13 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
         }
     }
 
+    /**
+     * Calculates the time taken to process the request by comparing the current time with the start time
+     * stored in the request attributes.
+     *
+     * @param request the HTTP request
+     * @return the execution time in milliseconds, or {@code -1} if the start time attribute is missing
+     */
     protected static long getExecutionTime(HttpServletRequest request) {
         Object startTimeAttr = request.getAttribute("startTime");
         if (startTimeAttr instanceof Long) {

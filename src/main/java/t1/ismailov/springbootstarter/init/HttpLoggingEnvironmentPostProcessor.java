@@ -11,7 +11,11 @@ import t1.ismailov.springbootstarter.config.HttpLoggingAutoConfiguration;
 import t1.ismailov.springbootstarter.exeption.HttpLoggingStartupException;
 
 import java.util.function.Function;
-
+/**
+ * {@code HttpLoggingEnvironmentPostProcessor} is responsible for processing and validating
+ * environment properties related to HTTP logging before the application's auto-configuration.
+ * This class ensures that the required properties for HTTP logging are correctly set and valid.
+ */
 @Slf4j
 @AutoConfiguration
 @AutoConfigureBefore(HttpLoggingAutoConfiguration.class)
@@ -22,6 +26,13 @@ public class HttpLoggingEnvironmentPostProcessor implements EnvironmentPostProce
     public static final String PROPERTY_HTTP_LOGGING_LEVEL =
             "logging.level.t1.ismailov.springbootstarter.config.HttpLoggingInterceptor";
 
+    /**
+     * Processes the environment to validate the properties necessary for HTTP logging.
+     * If any property is invalid or missing, an exception is thrown.
+     *
+     * @param environment the environment to process
+     * @param application the current Spring application
+     */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         log.info("Running HttpLoggingEnvironmentPostProcessor");
@@ -33,6 +44,15 @@ public class HttpLoggingEnvironmentPostProcessor implements EnvironmentPostProce
         log.debug("HttpLoggingEnvironmentPostProcessor completed successfully");
     }
 
+    /**
+     * Validates a specific environment property based on the provided validation function.
+     *
+     * @param environment        the environment to process
+     * @param propertyName       the name of the property to validate
+     * @param validationFunction the function to validate the property value
+     * @param validValues        a description of valid values for error reporting
+     * @throws HttpLoggingStartupException if the property is invalid
+     */
     private void validateProperty(ConfigurableEnvironment environment,
                                   String propertyName,
                                   Function<String, Boolean> validationFunction,
