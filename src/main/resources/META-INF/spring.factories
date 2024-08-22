@@ -1,0 +1,4 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  t1.ismailov.springbootstarter.init.HttpLoggingEnvironmentPostProcessor
+org.springframework.boot.diagnostics.FailureAnalyzer=\
+  t1.ismailov.springbootstarter.init.HttpLoggingFailureAnalysis

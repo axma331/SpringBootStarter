@@ -99,7 +99,7 @@ public class HttpLoggingInterceptor implements HandlerInterceptor {
     }
 
     protected static Map<String, String> getHeaders(Stream<String> headerNames,
-                                                  Function<String, String> headerValueFunction) {
+                                                    Function<String, String> headerValueFunction) {
         Map<String, String> headers = headerNames.collect(Collectors.toMap(Function.identity(), headerValueFunction));
 
         log.debug("Headers collected: {}", headers);

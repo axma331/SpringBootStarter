@@ -3,7 +3,7 @@ package t1.ismailov.springbootstarter.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -43,7 +43,7 @@ public class HttpLoggingAutoConfiguration {
      * @return the configured {@link HttpLoggingInterceptor} bean
      */
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnExpression("${http.logging.enabled:false}")
     public HttpLoggingInterceptor loggingInterceptor(HttpLoggingProperties loggingProperties) {
         log.info("Creating HttpLoggingInterceptor bean");
         return new HttpLoggingInterceptor(loggingProperties);

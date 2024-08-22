@@ -1,7 +1,6 @@
 package t1.ismailov.springbootstarter.config;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -12,7 +11,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Getter
 @Setter
-@RequiredArgsConstructor
 @ConfigurationProperties(prefix = "http.logging")
 public class HttpLoggingProperties {
 
@@ -21,10 +19,10 @@ public class HttpLoggingProperties {
      * This property corresponds to "http.logging.enabled" in the configuration.
      */
     private Boolean enabled;
-/**
- * The format of the HTTP log output (e.g., "json" or "text").
- * This property corresponds to "http.logging.format" in the configuration.
- */
+    /**
+     * The format of the HTTP log output (e.g., "json" or "text").
+     * This property corresponds to "http.logging.format" in the configuration.
+     */
     private String format;
 
 }

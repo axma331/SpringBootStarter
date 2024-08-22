@@ -1,25 +1,23 @@
 package t1.ismailov.springbootstarter.init;
 
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
-import t1.ismailov.springbootstarter.config.HttpLoggingAutoConfiguration;
 import t1.ismailov.springbootstarter.exeption.HttpLoggingStartupException;
 
 import java.util.function.Function;
+
 /**
  * {@code HttpLoggingEnvironmentPostProcessor} is responsible for processing and validating
  * environment properties related to HTTP logging before the application's auto-configuration.
  * This class ensures that the required properties for HTTP logging are correctly set and valid.
  */
-@Slf4j
-@AutoConfiguration
-@AutoConfigureBefore(HttpLoggingAutoConfiguration.class)
 public class HttpLoggingEnvironmentPostProcessor implements EnvironmentPostProcessor {
+
+    private static final Logger log = LoggerFactory.getLogger(HttpLoggingEnvironmentPostProcessor.class);
 
     public static final String PROPERTY_HTTP_LOGGING_ENABLED = "http.logging.enabled";
     public static final String PROPERTY_HTTP_LOGGING_FORMAT = "http.logging.format";

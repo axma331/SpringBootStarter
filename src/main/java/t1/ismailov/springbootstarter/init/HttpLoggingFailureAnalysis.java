@@ -1,12 +1,10 @@
 package t1.ismailov.springbootstarter.init;
 
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
-import t1.ismailov.springbootstarter.config.HttpLoggingAutoConfiguration;
 import t1.ismailov.springbootstarter.exeption.HttpLoggingStartupException;
 
 /**
@@ -14,10 +12,9 @@ import t1.ismailov.springbootstarter.exeption.HttpLoggingStartupException;
  * analysis for {@link HttpLoggingStartupException}. It helps in diagnosing the root cause
  * of failures related to HTTP logging configuration.
  */
-@Slf4j
-@AutoConfiguration
-@AutoConfigureBefore(HttpLoggingAutoConfiguration.class)
 public class HttpLoggingFailureAnalysis extends AbstractFailureAnalyzer<HttpLoggingStartupException> {
+
+    private static final Logger log = LoggerFactory.getLogger(HttpLoggingFailureAnalysis.class);
 
     /**
      * Analyzes the cause of a {@link HttpLoggingStartupException} and provides a detailed
@@ -35,5 +32,4 @@ public class HttpLoggingFailureAnalysis extends AbstractFailureAnalyzer<HttpLogg
                 "Provide valid values for the property in the configuration file.",
                 cause);
     }
-
 }
